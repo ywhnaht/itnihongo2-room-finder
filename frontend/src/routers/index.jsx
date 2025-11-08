@@ -1,9 +1,9 @@
 import { Navigate, createBrowserRouter } from "react-router-dom";
-import RoomDetail from "../pages/roomDetail.jsx";
+import RoomDetail from "../pages/RoomDetail";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/RoomDetail/:id",
     element: (
       <RoomDetail />
     )
