@@ -3,8 +3,8 @@ package org.example.backend.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.geolatte.geom.Point;
 
-import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -28,6 +28,8 @@ public class Rental {
 
     int price;
     double area;
+
+    @Column(name = "location", nullable = false, columnDefinition = "POINT")
     Point location;
 
     @Column(name = "thumbnail_url")
