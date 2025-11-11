@@ -53,10 +53,13 @@ public class Rental {
     @Column(name = "updated_at")
     LocalDateTime updatedAt;
 
+    @Column(name = "distance_to_school")
+    Double distanceToSchool;
+
     @OneToMany(mappedBy = "rental", cascade = CascadeType.ALL, orphanRemoval = true)
     List<RentalImage> images;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
             @JoinTable(name = "rental_amenities", joinColumns = @JoinColumn(name = "rental_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "amenity_id", referencedColumnName = "id"))
     List<Amenity> amenities;
