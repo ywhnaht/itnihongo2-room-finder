@@ -35,4 +35,17 @@ public class RentalController {
         RentalDetailDto rentalDetail = rentalService.getRentalDetails(id);
         return ResponseEntity.ok(ApiResponse.success(rentalDetail, "Successful!"));
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse<PageDto<RentalBasicDto>>> searchRentals(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int limit,
+            @RequestParam(required = false) Double maxDistance,
+            @RequestParam(required = false) Double minRating,
+            @RequestParam(required = false) Integer minPrice,
+            @RequestParam(required = false) Integer maxPrice
+    ) {
+        PageDto<RentalBasicDto> rentalPage = rentalService.searchRentals(page, limit, maxDistance, minRating, minPrice, maxPrice);
+        return ResponseEntity.ok(ApiResponse.success(rentalPage, "Successful!"));
+    }
 }
