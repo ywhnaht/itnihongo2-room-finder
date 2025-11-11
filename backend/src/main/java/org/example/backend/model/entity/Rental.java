@@ -64,4 +64,5 @@ public class Rental {
             @JoinTable(name = "rental_amenities", joinColumns = @JoinColumn(name = "rental_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "amenity_id", referencedColumnName = "id"))
     List<Amenity> amenities = new ArrayList<>();
+
 }

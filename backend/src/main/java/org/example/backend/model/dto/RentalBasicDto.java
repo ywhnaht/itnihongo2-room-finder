@@ -11,4 +11,5 @@ public interface RentalBasicDto {
     String getLocationGeoJson();
     LocalDateTime getCreatedAt();
     Double getDistanceToSchool();
+    String getFullAddress();
 }
