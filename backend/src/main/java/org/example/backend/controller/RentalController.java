@@ -43,9 +43,10 @@ public class RentalController {
             @RequestParam(required = false) Double maxDistance,
             @RequestParam(required = false) Double minRating,
             @RequestParam(required = false) Integer minPrice,
-            @RequestParam(required = false) Integer maxPrice
+            @RequestParam(required = false) Integer maxPrice,
+            @RequestParam(required = false) String address
     ) {
-        PageDto<RentalBasicDto> rentalPage = rentalService.searchRentals(page, limit, maxDistance, minRating, minPrice, maxPrice);
+        PageDto<RentalBasicDto> rentalPage = rentalService.searchRentals(page, limit, maxDistance, minRating, minPrice, maxPrice, address);
         return ResponseEntity.ok(ApiResponse.success(rentalPage, "Successful!"));
     }
 }

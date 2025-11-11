@@ -44,13 +44,14 @@ public class RentalService {
         return new PageDto<>(rentalPage.getContent(),  pagination);
     }
 
-        public PageDto<RentalBasicDto> searchRentals(int page, int limit,
-                                                                                                Double maxDistance,
-                                                                                                Double minRating,
-                                                                                                Integer minPrice,
-                                                                                                Integer maxPrice) {
-                Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
-                Page<RentalBasicDto> rentalPage = rentalRepository.findAllBasicWithFilters(maxDistance, minRating, minPrice, maxPrice, pageable);
+    public PageDto<RentalBasicDto> searchRentals(int page, int limit,
+                                                Double maxDistance,
+                                                Double minRating,
+                                                Integer minPrice,
+                                                Integer maxPrice,
+                                                String address) {
+        Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
+        Page<RentalBasicDto> rentalPage = rentalRepository.findAllBasicWithFilters(maxDistance, minRating, minPrice, maxPrice, address, pageable);
 
                 Map<String, Object> pagination = new HashMap<>();
                 pagination.put("currentPage", rentalPage.getNumber() + 1);
