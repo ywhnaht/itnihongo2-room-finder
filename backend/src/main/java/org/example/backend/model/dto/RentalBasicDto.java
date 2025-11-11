@@ -10,4 +10,5 @@ public interface RentalBasicDto {
     Double getAverageRating();
     String getLocationGeoJson();
     LocalDateTime getCreatedAt();
+    Double getDistanceToSchool();
 }

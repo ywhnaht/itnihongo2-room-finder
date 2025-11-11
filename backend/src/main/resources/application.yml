@@ -3,15 +3,18 @@ spring:
     name: room-finder
 
   datasource:
-    url: jdbc:mysql://localhost:3306/RoomFinder?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-    username: root
-    password: huyho2004
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/RoomFinder?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:huyho2004}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.spatial.dialect.mysql.MySQLSpatialDialect
+
+server:
+  port: 8080
