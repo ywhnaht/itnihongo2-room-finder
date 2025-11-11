@@ -19,7 +19,7 @@ import java.util.List;
 public class Rental {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    int id;
 
     String name;
     String description;

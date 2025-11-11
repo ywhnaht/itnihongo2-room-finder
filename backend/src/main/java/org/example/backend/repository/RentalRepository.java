@@ -27,6 +27,32 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
     )
     Page<RentalBasicDto> findAllBasic(Pageable pageable);
 
+    @Query(
+            value = "SELECT " +
+                    "    id, name, price, thumbnail_url as thumbnailUrl, " +
+                    "    average_rating as averageRating, rating_count as ratingCount, " +
+                    "    distance_to_school as distanceToSchool, " +
+                    "    ST_AsGeoJSON(location) as locationGeoJson, " +
+                    "    created_at as createdAt " +
+                    "FROM rentals " +
+                    "WHERE (:maxDistance IS NULL OR distance_to_school <= :maxDistance) " +
+                    "  AND (:minRating IS NULL OR average_rating >= :minRating) " +
+                    "  AND (:minPrice IS NULL OR price >= :minPrice) " +
+                    "  AND (:maxPrice IS NULL OR price <= :maxPrice)",
+
+            countQuery = "SELECT count(id) FROM rentals " +
+                    "WHERE (:maxDistance IS NULL OR distance_to_school <= :maxDistance) " +
+                    "  AND (:minRating IS NULL OR average_rating >= :minRating) " +
+                    "  AND (:minPrice IS NULL OR price >= :minPrice) " +
+                    "  AND (:maxPrice IS NULL OR price <= :maxPrice)",
+            nativeQuery = true
+    )
+    Page<RentalBasicDto> findAllBasicWithFilters(@Param("maxDistance") Double maxDistance,
+                                                 @Param("minRating") Double minRating,
+                                                 @Param("minPrice") Integer minPrice,
+                                                 @Param("maxPrice") Integer maxPrice,
+                                                 Pageable pageable);
+
     @Query("SELECT r FROM Rental r LEFT JOIN FETCH r.amenities WHERE r.id = :id")
     Optional<Rental> findDetailById(@Param("id") Long id);
 }

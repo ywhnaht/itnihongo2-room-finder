@@ -44,6 +44,23 @@ public class RentalService {
         return new PageDto<>(rentalPage.getContent(),  pagination);
     }
 
+        public PageDto<RentalBasicDto> searchRentals(int page, int limit,
+                                                                                                Double maxDistance,
+                                                                                                Double minRating,
+                                                                                                Integer minPrice,
+                                                                                                Integer maxPrice) {
+                Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("createdAt").descending());
+                Page<RentalBasicDto> rentalPage = rentalRepository.findAllBasicWithFilters(maxDistance, minRating, minPrice, maxPrice, pageable);
+
+                Map<String, Object> pagination = new HashMap<>();
+                pagination.put("currentPage", rentalPage.getNumber() + 1);
+                pagination.put("limit", rentalPage.getSize());
+                pagination.put("totalItems", rentalPage.getTotalElements());
+                pagination.put("totalPages", rentalPage.getTotalPages());
+
+                return new PageDto<>(rentalPage.getContent(),  pagination);
+        }
+
     @Transactional(readOnly = true)
     public RentalDetailDto getRentalDetails(Long id) {
         Rental rental = rentalRepository.findDetailById(id)
@@ -64,7 +81,7 @@ public class RentalService {
                 .collect(Collectors.toList());
 
         return RentalDetailDto.builder()
-                .id(rental.getId())
+                .id((long)rental.getId())
                 .name(rental.getName())
                 .description(rental.getDescription())
                 .fullAddress(rental.getFullAddress())

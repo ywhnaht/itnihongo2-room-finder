@@ -14,7 +14,7 @@ import lombok.experimental.FieldDefaults;
 public class RentalImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    int id;
 
     @Column(name = "image_url", nullable = false)
     String imageUrl;

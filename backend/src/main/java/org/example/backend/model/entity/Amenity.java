@@ -14,7 +14,7 @@ import lombok.experimental.FieldDefaults;
 public class Amenity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    int id;
 
     @Column(unique = true, nullable = false)
     String name;
