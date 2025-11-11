@@ -17,6 +17,7 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
             value = "SELECT " +
                     "    id, name, price, thumbnail_url as thumbnailUrl, " +
                     "    average_rating as averageRating, rating_count as ratingCount, " +
+                    "    distance_to_school as distanceToSchool, " +
                     "    ST_AsGeoJSON(location) as locationGeoJson, " +
                     "    created_at as createdAt " +
                     "FROM rentals",
