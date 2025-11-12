@@ -39,7 +39,7 @@ export default function Sidebar({ isOpen, place, onClose }) {
                 </svg>
                 <div className="distance-tag-content">
                   <div className="distance-tag-title">Khoảng cách đến trường</div>
-                  <div className="distance-tag-desc">{place.distanceSchool}</div>
+                  <div className="distance-tag-desc">{place.distanceToSchool}</div>
                 </div>
               </div>
               <div className="distance-tag">
@@ -95,7 +95,7 @@ export default function Sidebar({ isOpen, place, onClose }) {
               ))}
             </div>
 
-            <button className="contact-btn" onClick={() => window.open(`tel:${place.contact}`)}>Liên hệ: {place.contact}</button>
+            <button className="contact-btn" onClick={() => window.open(`tel:${place.contact}`)}>Xem chi tiết thông tin phòng</button>
           </div>
         ) : <p>Không có dữ liệu</p>}
       </div>
