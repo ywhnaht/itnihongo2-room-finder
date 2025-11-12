@@ -12,4 +12,7 @@ public interface RentalBasicDto {
     LocalDateTime getCreatedAt();
     Double getDistanceToSchool();
     String getFullAddress();
+    Integer getElectricityPrice();
+    Integer getWaterPrice();
+    Integer getWifiPrice();
 }

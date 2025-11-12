@@ -27,6 +27,11 @@ public class RentalDetailDto {
     private String contactName;
     private Double averageRating;
     private Integer ratingCount;
+
+    private Integer electricityPrice;
+    private Integer waterPrice;
+    private Integer wifiPrice;
+
     private LocalDateTime createdAt;
 
     private List<String> images;

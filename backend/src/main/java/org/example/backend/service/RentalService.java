@@ -94,6 +94,9 @@ public class RentalService {
                 .contactName(rental.getContactName())
                 .averageRating(rental.getAverageRating())
                 .ratingCount(rental.getRatingCount())
+                .electricityPrice(rental.getElectricityPrice())
+                .waterPrice(rental.getWaterPrice())
+                .wifiPrice(rental.getWifiPrice())
                 .createdAt(rental.getCreatedAt())
                 .images(imageUrls)
                 .amenities(amenityDtos) //

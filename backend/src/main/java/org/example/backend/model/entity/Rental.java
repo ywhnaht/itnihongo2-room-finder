@@ -48,6 +48,15 @@ public class Rental {
     @Column(name = "rating_count")
     Integer ratingCount;
 
+    @Column(name = "electricity_price")
+    Integer electricityPrice;
+
+    @Column(name = "water_price")
+    Integer waterPrice;
+
+    @Column(name = "wifi_price")
+    Integer wifiPrice;
+
     @Column(name = "created_at")
     LocalDateTime createdAt;
 
