@@ -369,17 +369,11 @@ body {
     color: #666;
 }
 
-
-
-
-/* Room List Container */
 .room-list {
     position: absolute;
     top: 150px;
-    /* Nằm dưới search box */
     left: 20px;
     width: 350px;
-    /* Độ rộng cố định */
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
     z-index: 1;
@@ -387,14 +381,11 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     transition: left 0.3s ease;
 
-    /* Quan trọng: Giới hạn chiều cao và cho phép cuộn */
     max-height: calc(100vh - 170px);
-    /* 100vh - top - padding-bottom */
     display: flex;
     flex-direction: column;
 }
 
-/* Di chuyển list khi sidebar mở */
 .room-list.with-sidebar {
     left: 440px;
 }
@@ -416,12 +407,9 @@ body {
     margin: 0;
     padding: 8px;
     overflow-y: auto;
-    /* Cho phép cuộn nội dung list */
     flex: 1;
-    /* Mở rộng để lấp đầy không gian còn lại */
 }
 
-/* Room List Item */
 .room-list-item {
     display: flex;
     padding: 12px;
@@ -447,7 +435,6 @@ body {
 .room-item-info {
     flex: 1;
     min-width: 0;
-    /* Fix lỗi text overflow */
 }
 
 .room-item-name {
@@ -455,8 +442,6 @@ body {
     font-weight: 600;
     color: #1a1a1a;
     margin: 0 0 4px;
-
-    /* Cắt ngắn text nếu quá dài */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -466,7 +451,6 @@ body {
     font-size: 14px;
     font-weight: 700;
     color: #c00;
-    /* Màu đỏ cho giá */
     margin: 0 0 4px;
 }
 
@@ -486,8 +470,6 @@ body {
     color: #555;
 }
 
-
-/* Thêm CSS cho SearchBar mới */
 .search-bar-container {
     position: absolute;
     top: 20px;
@@ -506,7 +488,6 @@ body {
 
 .search-bar-container.with-sidebar {
     left: 440px;
-    /* Di chuyển khi sidebar mở */
 }
 
 .search-bar-input {
@@ -550,11 +531,9 @@ body {
 }
 
 
-/* Cập nhật vị trí RoomList (nếu cần) */
 .room-list {
     position: absolute;
     top: 90px;
-    /* Đi xuống dưới SearchBar mới */
     left: 20px;
     width: 350px;
     background: rgba(255, 255, 255, 0.95);
@@ -565,7 +544,6 @@ body {
     transition: left 0.3s ease;
 
     max-height: calc(100vh - 110px);
-    /* 100vh - top - padding */
     display: flex;
     flex-direction: column;
 }
@@ -575,12 +553,10 @@ body {
     list-style: none;
     margin: 0;
     padding: 20px;
-    /* Tăng padding */
     overflow-y: auto;
     flex: 1;
 }
 
-/* Thêm CSS cho nút "Xem chi tiết" */
 .view-detail-btn {
     background-color: #667eea;
     color: white;
@@ -598,22 +574,18 @@ body {
     background-color: #5a6ed0;
 }
 
-/* CSS cho text khi không có kết quả */
 .no-results-text {
     padding: 20px;
     text-align: center;
     color: #666;
 }
 
-/* Điều chỉnh lại vị trí của SearchBar và MapOverlay khi sidebar mở */
 .search-bar-container.with-sidebar {
     left: 440px;
-    /* 420px (width) + 20px (padding) */
 }
 
 .map-overlay.with-sidebar {
     left: 440px;
-    /* 420px (width) + 20px (padding) */
 }
 
 /* --- Pagination Controls --- */
@@ -624,8 +596,6 @@ body {
     padding: 12px 20px;
     border-top: 1px solid #eee;
     background: #fdfdfd;
-
-    /* Đảm bảo nó dính ở dưới đáy sidebar */
     position: sticky;
     bottom: 0;
 }
@@ -658,14 +628,10 @@ body {
     font-weight: 500;
 }
 
-/* Điều chỉnh lại .room-list-content để nó không bị
-   che bởi thanh pagination */
 .room-list-content {
     list-style: none;
     margin: 0;
     padding: 20px;
     overflow-y: auto;
     flex: 1;
-    /* Rất quan trọng: cho flex 1 để nó chiếm
-       không gian và đẩy pagination xuống */
 }
