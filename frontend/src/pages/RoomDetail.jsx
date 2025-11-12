@@ -11,6 +11,12 @@ function RoomDetail() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+  document.body.classList.add('room-detail');
+  return () => document.body.classList.remove('room-detail');
+}, []);
+
+
+  useEffect(() => {
     async function fetchRoom() {
       try {
         setError(null);
