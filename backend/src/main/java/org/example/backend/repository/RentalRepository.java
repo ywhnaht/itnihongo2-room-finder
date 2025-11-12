@@ -19,6 +19,9 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
                     "    average_rating as averageRating, rating_count as ratingCount, " +
                     "    distance_to_school as distanceToSchool, " +
                     "    ST_AsGeoJSON(location) as locationGeoJson, " +
+                    "    electricity_price as electricityPrice, " +
+                    "    water_price as waterPrice, " +
+                    "    wifi_price as wifiPrice, " +
                     "    created_at as createdAt " +
                     "FROM rentals",
 
@@ -33,7 +36,10 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
                     "    average_rating as averageRating, rating_count as ratingCount, " +
                     "    distance_to_school as distanceToSchool, " +
                     "    ST_AsGeoJSON(location) as locationGeoJson, " +
-                    "    created_at as createdAt " +
+                    "    created_at as createdAt, " +
+                    "    electricity_price as electricityPrice, " +
+                    "    water_price as waterPrice, " +
+                    "    wifi_price as wifiPrice " +
 
                     "FROM rentals " +
                     "WHERE (:maxDistance IS NULL OR distance_to_school <= :maxDistance) " +
