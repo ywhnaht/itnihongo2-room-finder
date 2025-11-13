@@ -135,28 +135,30 @@ export default function Map() {
     }
   };
   return (
-    <>
-      <SearchBar
-        onSearch={(filters) => fetchRentalData(filters, 1)}
-        className={isResultSidebarOpen ? 'with-sidebar' : ''}
-      />
+    <div className="h-screen w-screen overflow-hidden relative">
+      <>
+        <SearchBar
+          onSearch={(filters) => fetchRentalData(filters, 1)}
+          className={isResultSidebarOpen ? 'with-sidebar' : ''}
+        />
 
-      <ResultSidebar
-        places={placesData}
-        onMapClick={handleRoomItemClick}
-        isOpen={isResultSidebarOpen}
-        onClose={() => setIsResultSidebarOpen(false)}
-        pagination={pagination}
-        onPageChange={handlePageChange}
-      />
+        <ResultSidebar
+          places={placesData}
+          onMapClick={handleRoomItemClick}
+          isOpen={isResultSidebarOpen}
+          onClose={() => setIsResultSidebarOpen(false)}
+          pagination={pagination}
+          onPageChange={handlePageChange}
+        />
 
-      <MapComponent
-        placesData={placesData}
-        openSidebar={handleMarkerClick}
-        onMapLoad={(map) => { mapInstanceRef.current = map; }}
-      />
+        <MapComponent
+          placesData={placesData}
+          openSidebar={handleMarkerClick}
+          onMapLoad={(map) => { mapInstanceRef.current = map; }}
+        />
 
-      {loading && <Loading />}
-    </>
+        {loading && <Loading />}
+      </>
+    </div>
   );
 }
