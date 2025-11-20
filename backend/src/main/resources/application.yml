@@ -20,7 +20,7 @@ server:
   port: 8080
 
 app:
-  frondend-url: http://localhost:5173
+  frondend-url: https://itnihongo2-room-finder.vercel.app
 
 
 #spring:
