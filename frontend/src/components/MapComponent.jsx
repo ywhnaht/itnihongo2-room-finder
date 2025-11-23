@@ -5,8 +5,12 @@ export default function MapComponent({ placesData, openSidebar, onMapLoad }) {
     const markersRef = useRef([]);
     const center = [108.15009, 16.07446];
     const accessToken = import.meta.env.VITE_GOONG_ACCESS_TOKEN;
+    const isInitializedRef = useRef(false);
 
+    // Chỉ khởi tạo map 1 lần
     useEffect(() => {
+        if (isInitializedRef.current) return;
+        
         if (!window.goongjs) {
             console.error('goongjs not found');
             return;
@@ -37,6 +41,8 @@ export default function MapComponent({ placesData, openSidebar, onMapLoad }) {
             mapRef.current.flyTo({ center, zoom: 14.5, pitch: 50, duration: 2000 });
         });
 
+        isInitializedRef.current = true;
+
         return () => {
             markersRef.current.forEach(m => m.remove && m.remove());
             markersRef.current = [];
@@ -44,12 +50,15 @@ export default function MapComponent({ placesData, openSidebar, onMapLoad }) {
                 mapRef.current.remove();
                 mapRef.current = null;
             }
+            isInitializedRef.current = false;
         };
-    }, [onMapLoad]);
+    }, []);
 
+    // Chỉ cập nhật markers khi placesData thay đổi
     useEffect(() => {
         if (!mapRef.current || !window.goongjs) return;
 
+        // Xóa markers cũ
         markersRef.current.forEach(m => m.remove && m.remove());
         markersRef.current = [];
 
@@ -57,6 +66,7 @@ export default function MapComponent({ placesData, openSidebar, onMapLoad }) {
             return;
         }
 
+        // Thêm markers mới
         placesData.forEach((place, i) => {
             const marker = new window.goongjs.Marker({ color: '#007BFF' })
                 .setLngLat([place.lng, place.lat])
@@ -66,6 +76,7 @@ export default function MapComponent({ placesData, openSidebar, onMapLoad }) {
             markersRef.current.push(marker);
         });
 
+        // Fit bounds
         const bounds = new window.goongjs.LngLatBounds();
         bounds.extend(center);
         placesData.forEach(p => bounds.extend([p.lng, p.lat]));

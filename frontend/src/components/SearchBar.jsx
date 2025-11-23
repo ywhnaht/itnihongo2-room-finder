@@ -1,10 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function SearchBar({ onSearch, className }) {
     const [keyword, setKeyword] = useState('');
     const [price, setPrice] = useState('');
     const [distance, setDistance] = useState('');
     const [rating, setRating] = useState('');
+
+    // Debounce search khi nhập keyword
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (keyword.trim() || price || distance || rating) {
+                onSearch({
+                    keyword,
+                    price,
+                    distance,
+                    rating,
+                });
+            }
+        }, 400);
+
+        return () => clearTimeout(timer);
+    }, [keyword, price, distance, rating]);
 
     const handleSearchClick = () => {
         onSearch({
