@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 export default function MapComponent({ placesData, openSidebar, onMapLoad }) {
     const mapRef = useRef(null);
@@ -6,11 +6,11 @@ export default function MapComponent({ placesData, openSidebar, onMapLoad }) {
     const center = [108.15009, 16.07446];
     const accessToken = import.meta.env.VITE_GOONG_ACCESS_TOKEN;
     const isInitializedRef = useRef(false);
+    const [isDarkStyle, setIsDarkStyle] = useState(false);
 
     // Chỉ khởi tạo map 1 lần
     useEffect(() => {
         if (isInitializedRef.current) return;
-        
         if (!window.goongjs) {
             console.error('goongjs not found');
             return;
@@ -102,18 +102,17 @@ export default function MapComponent({ placesData, openSidebar, onMapLoad }) {
                 >
                     🏠 Về vị trí ban đầu
                 </button>
-                <button
-                    className="control-btn"
-                    onClick={() => {
-                        const current = mapRef.current.getStyle?.() ?? {};
-                        const next = current?.name === 'dark'
-                            ? 'https://tiles.goong.io/assets/goong_map_web.json'
-                            : 'https://tiles.goong.io/assets/goong_map_dark.json';
-                        mapRef.current.setStyle(next);
-                    }}
-                >
-                    🗺️ Đổi kiểu bản đồ
-                </button>
+                <button className="control-btn" onClick={() => {
+                    // toggle style
+                    if (!mapRef.current) return; // Kiểm tra an toàn
+
+                    const nextStyle = isDarkStyle
+                        ? 'https://tiles.goong.io/assets/goong_map_web.json' // Nếu đang Dark (isDarkStyle=true), chuyển sang Light
+                        : 'https://tiles.goong.io/assets/goong_map_dark.json'; // Nếu đang Light (isDarkStyle=false), chuyển sang Dark
+
+                    mapRef.current.setStyle(nextStyle);
+                    setIsDarkStyle(prev => !prev);
+                }}>🗺️ Đổi kiểu bản đồ</button>
             </div>
         </>
     );
