@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import MapComponent from '../components/MapComponent';
 import Loading from '../components/Loading';
 import ResultSidebar from '../components/ResultSidebar';
@@ -15,6 +15,8 @@ export default function Map() {
 
   const [pagination, setPagination] = useState(null);
   const [currentFilters, setCurrentFilters] = useState(null);
+  // state quản lí trọ đang được chọn 
+  const [selectedPlace, setSelectedPlace] = useState(null);
 
   const handleRoomItemClick = (room) => {
     if (!mapInstanceRef.current || !room.lng || !room.lat) return;
@@ -27,6 +29,8 @@ export default function Map() {
   const handleMarkerClick = (index) => {
     setIsResultSidebarOpen(true);
     const place = placesData[index];
+    setIsResultSidebarOpen(true);
+    setSelectedPlace(place);
     if (mapInstanceRef.current && place) {
       mapInstanceRef.current.flyTo({
         center: [place.lng, place.lat],
@@ -35,6 +39,7 @@ export default function Map() {
     }
   };
 
+  // ====================== FETCH DATA ======================
   const fetchRentalData = async (filters, page = 1) => {
     setLoading(true);
     setPlacesData([]);
@@ -49,18 +54,11 @@ export default function Map() {
       setStatus(`⏳ Đang tải trang ${page}...`);
     }
 
-    if (!filtersToUse) {
-      setLoading(false);
-      setStatus('Vui lòng nhập tìm kiếm hoặc bộ lọc.');
-      return;
-    }
-
     const params = new URLSearchParams();
-
-    if (filtersToUse.keyword) params.append('address', filtersToUse.keyword);
-    if (filtersToUse.rating) params.append('minRating', filtersToUse.rating);
-    if (filtersToUse.distance) params.append('maxDistance', filtersToUse.distance);
-    if (filtersToUse.price) {
+    if (filtersToUse?.keyword) params.append('address', filtersToUse.keyword);
+    if (filtersToUse?.rating) params.append('minRating', filtersToUse.rating);
+    if (filtersToUse?.distance) params.append('maxDistance', filtersToUse.distance);
+    if (filtersToUse?.price) {
       if (filtersToUse.price.includes('-')) {
         const [min, max] = filtersToUse.price.split('-');
         params.append('minPrice', min);
@@ -134,31 +132,46 @@ export default function Map() {
       fetchRentalData(null, newPage);
     }
   };
+
+  // ====================== FETCH DATA LẦN ĐẦU ======================
+  useEffect(() => {
+    fetchRentalData(null, 1); // Lấy dữ liệu mặc định trang 1 ngay khi load trang
+  }, []);
+
+  // ====================== RENDER ======================
+  const sidebarPlaces = selectedPlace ? [selectedPlace] : placesData;
+
+  const sidebarPagination = selectedPlace ? null : pagination;
+
   return (
     <div className="h-screen w-screen overflow-hidden relative">
-      <>
-        <SearchBar
-          onSearch={(filters) => fetchRentalData(filters, 1)}
-          className={isResultSidebarOpen ? 'with-sidebar' : ''}
-        />
+      <SearchBar
+        onSearch={(filters) => {
+          setSelectedPlace(null);
+          fetchRentalData(filters, 1);
+        }}
+        className={isResultSidebarOpen ? 'with-sidebar' : ''}
+      />
 
-        <ResultSidebar
-          places={placesData}
-          onMapClick={handleRoomItemClick}
-          isOpen={isResultSidebarOpen}
-          onClose={() => setIsResultSidebarOpen(false)}
-          pagination={pagination}
-          onPageChange={handlePageChange}
-        />
+      <ResultSidebar
+        places={sidebarPlaces}
+        onMapClick={handleRoomItemClick}
+        isOpen={isResultSidebarOpen}
+        onClose={() => {
+          setIsResultSidebarOpen(false);
+          setSelectedPlace(null);
+        }}
+        pagination={sidebarPagination}
+        onPageChange={handlePageChange}
+      />
 
-        <MapComponent
-          placesData={placesData}
-          openSidebar={handleMarkerClick}
-          onMapLoad={(map) => { mapInstanceRef.current = map; }}
-        />
+      <MapComponent
+        placesData={placesData}
+        openSidebar={handleMarkerClick}
+        onMapLoad={(map) => { mapInstanceRef.current = map; }}
+      />
 
-        {loading && <Loading />}
-      </>
+      {loading && <Loading />}
     </div>
   );
 }
