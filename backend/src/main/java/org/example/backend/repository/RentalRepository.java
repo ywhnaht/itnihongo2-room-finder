@@ -46,14 +46,14 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
                     "  AND (:minRating IS NULL OR average_rating >= :minRating) " +
                     "  AND (:minPrice IS NULL OR price >= :minPrice) " +
                     "  AND (:maxPrice IS NULL OR price <= :maxPrice) " +
-                    "  AND (:address IS NULL OR full_address LIKE CONCAT('%', :address, '%'))",
+                    "  AND (:address IS NULL OR full_address LIKE CONCAT('%', :address, '%') OR name LIKE CONCAT('%', :address, '%'))",
 
             countQuery = "SELECT count(id) FROM rentals " +
                     "WHERE (:maxDistance IS NULL OR distance_to_school <= :maxDistance) " +
                     "  AND (:minRating IS NULL OR average_rating >= :minRating) " +
                     "  AND (:minPrice IS NULL OR price >= :minPrice) " +
                     "  AND (:maxPrice IS NULL OR price <= :maxPrice) " +
-                    "  AND (:address IS NULL OR full_address LIKE CONCAT('%', :address, '%'))",
+                    "  AND (:address IS NULL OR full_address LIKE CONCAT('%', :address, '%') OR name LIKE CONCAT('%', :address, '%'))",
             nativeQuery = true
     )
     Page<RentalBasicDto> findAllBasicWithFilters(@Param("maxDistance") Double maxDistance,

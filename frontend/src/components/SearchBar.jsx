@@ -1,10 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { RiResetLeftLine } from "react-icons/ri";
 
-export default function SearchBar({ onSearch, className }) {
+export default function SearchBar({ onSearch, onReset, className, initialFilters }) {
     const [keyword, setKeyword] = useState('');
     const [price, setPrice] = useState('');
     const [distance, setDistance] = useState('');
     const [rating, setRating] = useState('');
+
+    useEffect(() => {
+        if (initialFilters) {
+            setKeyword(initialFilters.keyword || '');
+            setPrice(initialFilters.price || '');
+            setDistance(initialFilters.distance || '');
+            setRating(initialFilters.rating || '');
+        }
+    }, [initialFilters]);
+
+    // Debounce search khi nhập keyword
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (keyword.trim() || price || distance || rating) {
+                onSearch({
+                    keyword,
+                    price,
+                    distance,
+                    rating,
+                });
+            }
+        }, 400);
+
+        return () => clearTimeout(timer);
+    }, [keyword, price, distance, rating]);
 
     const handleSearchClick = () => {
         onSearch({
@@ -13,6 +39,14 @@ export default function SearchBar({ onSearch, className }) {
             distance,
             rating,
         });
+    };
+
+    const handleResetClick = () => {
+        setKeyword('');
+        setPrice('');
+        setDistance('');
+        setRating('');
+        if (onReset) onReset();
     };
 
     return (
@@ -66,6 +100,13 @@ export default function SearchBar({ onSearch, className }) {
             {/* Nút Tìm kiếm */}
             <button className="search-bar-button" onClick={handleSearchClick}>
                 🔍
+            </button>
+            <button 
+                className="text-gray-900 p-2.5 rounded-md ml-2 hover:bg-gray-200 transition duration-200"
+                onClick={handleResetClick}
+                title="Làm mới bộ lọc"
+            >
+                <RiResetLeftLine size={20}/>
             </button>
         </div>
     );

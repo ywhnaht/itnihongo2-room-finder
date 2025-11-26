@@ -1,12 +1,16 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 export default function MapComponent({ placesData, openSidebar, onMapLoad }) {
     const mapRef = useRef(null);
     const markersRef = useRef([]);
     const center = [108.15009, 16.07446];
     const accessToken = import.meta.env.VITE_GOONG_ACCESS_TOKEN;
+    const isInitializedRef = useRef(false);
+    const [isDarkStyle, setIsDarkStyle] = useState(false);
 
+    // Chỉ khởi tạo map 1 lần
     useEffect(() => {
+        if (isInitializedRef.current) return;
         if (!window.goongjs) {
             console.error('goongjs not found');
             return;
@@ -37,6 +41,8 @@ export default function MapComponent({ placesData, openSidebar, onMapLoad }) {
             mapRef.current.flyTo({ center, zoom: 14.5, pitch: 50, duration: 2000 });
         });
 
+        isInitializedRef.current = true;
+
         return () => {
             markersRef.current.forEach(m => m.remove && m.remove());
             markersRef.current = [];
@@ -44,12 +50,15 @@ export default function MapComponent({ placesData, openSidebar, onMapLoad }) {
                 mapRef.current.remove();
                 mapRef.current = null;
             }
+            isInitializedRef.current = false;
         };
-    }, [onMapLoad]);
+    }, []);
 
+    // Chỉ cập nhật markers khi placesData thay đổi
     useEffect(() => {
         if (!mapRef.current || !window.goongjs) return;
 
+        // Xóa markers cũ
         markersRef.current.forEach(m => m.remove && m.remove());
         markersRef.current = [];
 
@@ -57,6 +66,7 @@ export default function MapComponent({ placesData, openSidebar, onMapLoad }) {
             return;
         }
 
+        // Thêm markers mới
         placesData.forEach((place, i) => {
             const marker = new window.goongjs.Marker({ color: '#007BFF' })
                 .setLngLat([place.lng, place.lat])
@@ -66,6 +76,7 @@ export default function MapComponent({ placesData, openSidebar, onMapLoad }) {
             markersRef.current.push(marker);
         });
 
+        // Fit bounds
         const bounds = new window.goongjs.LngLatBounds();
         bounds.extend(center);
         placesData.forEach(p => bounds.extend([p.lng, p.lat]));
@@ -91,18 +102,17 @@ export default function MapComponent({ placesData, openSidebar, onMapLoad }) {
                 >
                     🏠 Về vị trí ban đầu
                 </button>
-                <button
-                    className="control-btn"
-                    onClick={() => {
-                        const current = mapRef.current.getStyle?.() ?? {};
-                        const next = current?.name === 'dark'
-                            ? 'https://tiles.goong.io/assets/goong_map_web.json'
-                            : 'https://tiles.goong.io/assets/goong_map_dark.json';
-                        mapRef.current.setStyle(next);
-                    }}
-                >
-                    🗺️ Đổi kiểu bản đồ
-                </button>
+                <button className="control-btn" onClick={() => {
+                    // toggle style
+                    if (!mapRef.current) return; // Kiểm tra an toàn
+
+                    const nextStyle = isDarkStyle
+                        ? 'https://tiles.goong.io/assets/goong_map_web.json' // Nếu đang Dark (isDarkStyle=true), chuyển sang Light
+                        : 'https://tiles.goong.io/assets/goong_map_dark.json'; // Nếu đang Light (isDarkStyle=false), chuyển sang Dark
+
+                    mapRef.current.setStyle(nextStyle);
+                    setIsDarkStyle(prev => !prev);
+                }}>🗺️ Đổi kiểu bản đồ</button>
             </div>
         </>
     );
