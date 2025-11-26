@@ -22,7 +22,6 @@ server:
 app:
   frondend-url: https://itnihongo2-room-finder.vercel.app
 
-
 #spring:
 #  application:
 #    name: room-finder
